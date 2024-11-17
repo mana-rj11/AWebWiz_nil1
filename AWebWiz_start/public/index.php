@@ -29,7 +29,7 @@ session_start();
 
 include_mvc_php_files();
 
-// select page to load,function to call
+// select page to load, ie. function to call
 // $page = @$_GET['page'] ?: 'home';
 // making router more universal => using superglobal REQUEST instead of POST or GET
 $page = @$_REQUEST['page'] ?: 'home';
