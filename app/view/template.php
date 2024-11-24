@@ -1,6 +1,6 @@
 <?php
 
-function html_head()
+function html_head($menu_array)
 {
     $debug = false;
 	ob_start();
@@ -23,8 +23,21 @@ function html_head()
             France 24 (MVC)
             <img src="./media/icon3.png">
         </h1>
+
+        <?php
+        foreach( $menu_array as $menu)
+        {
+            $title = $menu[0];
+            $url = $menu[1];
+            echo <<< HTML
+          <a href="?page={$url}">{$title}</a>
+HTML;
+
+        }
+        ?>
     </header>
     <?php
+
 
 	if($debug)
 	{

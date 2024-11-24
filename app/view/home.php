@@ -13,7 +13,7 @@ function html_body()
         HOME
     </h2>
     <p>
-        Ceci est la home page
+        Ceci est notre site
     </p>
     <?php
 	return ob_get_clean();
