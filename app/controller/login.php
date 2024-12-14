@@ -5,29 +5,53 @@ function main_login()
 	$action = @$_GET['action'] ?: "";
 	$msg = '';
 
-	//	if(isset($_POST['logout'] ))
-	if( $action == 'logout' )
+	if(isset($_POST['set_logout']))
 	{
 		// l'utilisateur est en train de se délogguer
 		// logout_print();
-		session_unset();
-		$msg = 'Vous êtes déloggué. ';
+		unset($_SESSION['logout']);
+		$msg = 'Vous êtes déloggué.';
 	}
 
-	if( ! empty($_POST['identifier']))
+	if(isset($_POST['set_login']))
 	{
 		// l'utilisateur est en train de s'identifier
-		list( $valide, $_SESSION['id'], $_SESSION['role'] ) = login_validate($_POST['identifier']);
-		// si identification ratée
-		if( ! $valide )
-		{
-			// unknown_user_print();
-			session_unset();
-			$msg = "Vous n'êtes pas identifié.";
-		}
+        $login = $_POST['my_login'];
+        $is_valid = check_login($login);
+        if($is_valid) // si valide..
+        {
+            // utilisateur est identifié?
+            // list( $valide, $_SESSION['login'], $_SESSION['role'] ) = login_validate($_POST['identifier']);
+            $_SESSION['login']['is_logged'] = true;
+            $_SESSION['login']['name'] = $login;
+        }
+        else
+        {
+            // si identification ratée
+            // unknown_user_print();
+            unset($_SESSION['login']);
+            $msg = "Identifiant non valide. Veuillez réessayer.";
+            // mauvais identifiant
+        }
 	}
 
-	if(isset($_SESSION['id']))
+
+
+    // ne s'est pas loggué
+    echo form_login();
+
+    if(isset($msg))
+    {
+        echo <<< HTML
+            <p>$msg</p>
+HTML;
+
+    }
+
+
+
+
+
 	{
 		// l'utilisateur est déjà identifié
 		// plus besoin du composant login
@@ -35,11 +59,39 @@ function main_login()
 		print('mouchard');
 		header("Location: .");
 	}
-	else
+?>
+<h1>Log in</h1>
+<?php
+
+if(isset($_SESSION['login']['is_logged'])
+and $_SESSION['login']['is_logged'])
+{
+    // bienvenue
+    echo <<< HTML
+        <form method="POST">
+            <p>Bienvenue {$_SESSION['login']['name']}</p>
+            <button type="submit" name="set_logout">Log out</button> 
+        </form>
+HTML;
+}
+
+
+	if(isset($_POST['set_logout']))
 	{
 		// l'utilisateur n'est pas identifié
-		$msg .= html_unidentified_user();
+        unset($_SESSION['logout']);
+		$msg .= "Vous vous êtes déloggué"();
 	}
+    else
+    {
+        // non loggué
+        echo form_login();
+        if(isset($msg))
+        {
+            echo <<< HTML
+HTML;
+        }
+    }
 
     return join( "\n", [
 		ctrl_head(),

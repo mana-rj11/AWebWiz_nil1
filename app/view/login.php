@@ -54,15 +54,20 @@ function html_close_form()
 }
 
 /**
- *
+ * form login
  */
-function html_unidentified_user()
+function form_login()
 {
-	return <<< HTML
-        Identifiez-vous :
-        <input type="text" name="identifier">
-        <button type="submit">log in</button>
+	$out = <<< HTML
+    <form method="post">
+        <label>votre nom ?</label>
+        <input type="text" name="my_login">
+        <button name="set_login" type="submit">log !</button>
+    </form>
+
+
     HTML;
+
 }
 
 function html_link_home()

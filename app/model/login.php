@@ -37,4 +37,16 @@ function login_validate($input)
 	}
 }
 
+/**
+ * check_login() vérifie si le login correspond à un utilisateur autorisé.
+ * @param string $login Nom d'utilisateur à vérifier
+ * @return bool Retourne true si l'utilisateur est autorisé, sinon false
+ */
+function check_login($login)
+{
+    $authorized_user = "groupeM";
+
+    return ($login == $authorized_user);
+}
+
 ?>
