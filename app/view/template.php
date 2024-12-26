@@ -1,6 +1,6 @@
 <?php
 
-function html_head($menu_array)
+function html_head($menu_array=[])
 {
     $debug = false;
 	ob_start();
