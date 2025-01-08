@@ -1,9 +1,14 @@
 
+/* polices*/
+@import url('https://fonts.cdnfonts.com/css/rojal');
+
 body
 {
     font-size: medium;
     /* font-size:10px; */
-    width:26.2cm;
+    /*width:26.2cm;*/
+    min-height: 100%;
+
 }
 
 a
@@ -21,11 +26,37 @@ div#txt
 
 h1
 {
-    font-family: Arial, sans-serif;
-    font-size:large;
     text-align:center;
 }
 
+header h1{
+    font-family: 'Rojal', sans-serif;
+    font-size: 70px;
+}
+
+/* Style pour le sous-menu (nav) */
+nav.secondary-menu {
+    background-color: #ffffff;
+    padding: 10px 20px;
+    border-bottom: 1px solid #CCCCCC; /* Ligne de séparation */
+    font-size: 14px;
+    text-align: center;
+}
+
+nav.secondary-menu a {
+    color:#212529 ;
+    font-family: 'Helvetica', sans-serif;
+    font-weight: 500;
+    text-decoration: none;
+    margin-right: 15px;
+}
+nav.secondary-menu a:hover{
+    color: black;
+    font-weight: bold;
+}
+#HomeTitle{
+    color: black;
+}
 h1 img
 {
     width: 50px;
@@ -173,9 +204,19 @@ hr
 {
     clear: both;
 }
-
+.menu-link {
+    color: #111111;
+    font-size: 13px;
+}
+/* Conteneur global pour le menu et le titre */
+.menu-container {
+    background-color: #f8f9fa;
+    padding: 10px 20px;
+    border-bottom: 2px solid #ddd;
+}
 header, footer
 {
+    text-align: center; /* alignement du texte au milieu(centre)*/
     background-color:lightcyan ;
 }
 
@@ -184,20 +225,3 @@ footer img
     width: 40px;
     height: 30px;
 }
-
-/* Menu */
-ul.menu
-{
-    padding:0;
-    margin:0;
-    list-style-type:none;
-    /*text-align:right;*/
-}
-
-ul.menu li
-{
-    display:inline-block;
-    text-decoration:none;
-    padding:5px;
-}
-

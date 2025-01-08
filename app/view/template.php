@@ -9,6 +9,27 @@
 function html_head($menu_array = [])
 {
     $debug = false;
+    // Sous-menu
+    $sub_menu_array = [
+        ["Latest", "latest"],
+        ["World", "world"],
+        ["Business", "business"],
+        ["U.S.", "us"],
+        ["Politics", "politics"],
+        ["Economy", "economy"],
+        ["Tech", "tech"],
+        ["Markets & Finance", "markets"],
+        ["Opinion", "opinions"],
+        ["Arts", "arts"],
+        ["Lifestyle", "lifestyle"],
+        ["Real Estate", "real estate"],
+        ["Personal Finance", "personal finance"],
+        ["Health", "health"],
+        ["Style", "style"],
+        ["Sports", "sports"]
+
+    ];
+
 
     // Valide le tableau des menus
     $menu_array = validate_menu_array($menu_array);
@@ -29,12 +50,12 @@ function html_head($menu_array = [])
     </head>
     <body>
     <header>
-        <div id="header-container">
-            <h1>
-                France 24 (MVC)
-                <img src="./media/icon3.png" alt="Logo">
-            </h1>
-            <nav>
+            <div class="menu-container">
+                <!-- Titre principal -->
+                <h1 id="HomeTitle">THE WALL STREET JOURNAL.</h1>
+
+                <!-- Menu principal -->
+                <div class="menu-links">
                 <?php
                 foreach ($menu_array as $menu) {
                     // Vérifie que chaque élément est bien formé
@@ -45,9 +66,21 @@ function html_head($menu_array = [])
 HTML;
                 }
                 ?>
-            </nav>
+                </div>
         </div>
     </header>
+    <!-- Sous-menu (nav) -->
+    <nav class="secondary-menu">
+        <?php
+        foreach ($sub_menu_array as $sub_menu) {
+            $title = $sub_menu[0];
+            $url = $sub_menu[1];
+            echo <<< HTML
+          <a href="?category={$url}">{$title}</a>
+HTML;
+        }
+        ?>
+    </nav>
     <?php
 
     if ($debug) {
