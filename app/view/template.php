@@ -1,13 +1,23 @@
 <?php
 
-function html_head($menu_array=[])
+/**
+ * Génère la partie `<head>` et l'entête avec le menu.
+ *
+ * @param array $menu_array Tableau contenant les éléments du menu.
+ * @return string
+ */
+function html_head($menu_array = [])
 {
     $debug = false;
-	ob_start();
-	?>
-	<html lang="fr">
-	<head>
-		<title>AWebWiz Template (MVC)</title>
+
+    // Valide le tableau des menus
+    $menu_array = validate_menu_array($menu_array);
+
+    ob_start();
+    ?>
+    <html lang="fr">
+    <head>
+        <title>AWebWiz Template (MVC)</title>
         <link rel="stylesheet" href="./css/bootstrap/bootstrap.min.css" />  <!-- lib externe -->
         <link rel="stylesheet" href="./css/internal/main.css" /> <!-- lib interne / perso -->
         <script
@@ -16,51 +26,69 @@ function html_head($menu_array=[])
                 crossorigin="anonymous"></script>
         <script src="./js/quirks/QuirksMode.js"></script>
         <script src="./js/internal/favorite.js"></script>
-	</head>
-	<body>
+    </head>
+    <body>
     <header>
-        <h1>
-            France 24 (MVC)
-            <img src="./media/icon3.png">
-        </h1>
-
-        <?php
-        foreach( $menu_array as $menu)
-        {
-            $title = $menu[0];
-            $url = $menu[1];
-            echo <<< HTML
-          <a href="?page={$url}">{$title}</a>
+        <div id="header-container">
+            <h1>
+                France 24 (MVC)
+                <img src="./media/icon3.png" alt="Logo">
+            </h1>
+            <nav>
+                <?php
+                foreach ($menu_array as $menu) {
+                    // Vérifie que chaque élément est bien formé
+                    $title = htmlspecialchars($menu[0], ENT_QUOTES, 'UTF-8');
+                    $url = htmlspecialchars($menu[1], ENT_QUOTES, 'UTF-8');
+                    echo <<<HTML
+                    <a href="?page={$url}">{$title}</a> |
 HTML;
-
-        }
-        ?>
+                }
+                ?>
+            </nav>
+        </div>
     </header>
     <?php
 
-
-	if($debug)
-	{
+    if ($debug) {
         var_dump($_COOKIE);
-		var_dump($_SESSION);
+        var_dump($_SESSION);
         var_dump($_GET);
         var_dump($_POST);
-	}
-	return ob_get_clean();
+    }
+
+    return ob_get_clean();
 }
 
+/**
+ * Génère le pied de page HTML.
+ *
+ * @return string
+ */
 function html_foot()
 {
-	ob_start();
-	?>
-        <hr />
-        <footer>
-            Made with the amazing AWebWiz framework
-            <img src="./media/awebwiz.png" alt="AWebWiz logo">
-        </footer>
-	</body>
-	</html>
-	<?php
-	return ob_get_clean();
+    ob_start();
+    ?>
+    <hr />
+    <footer>
+        Made with the amazing AWebWiz framework
+        <img src="./media/awebwiz.png" alt="AWebWiz logo">
+    </footer>
+    </body>
+    </html>
+    <?php
+    return ob_get_clean();
 }
 
+/**
+ * Valide et filtre les entrées du tableau `$menu_array`.
+ *
+ * @param array $menu_array Tableau contenant les éléments du menu.
+ * @return array Tableau filtré et valide.
+ */
+function validate_menu_array($menu_array)
+{
+    return array_filter($menu_array, function ($menu) {
+        return isset($menu[0], $menu[1]) && is_string($menu[0]) && is_string($menu[1]);
+    });
+}
