@@ -31,8 +31,11 @@ function main_login()
 
     // Afficher le formulaire ou un message de bienvenue
     echo <<<HTML
-    <h1>Log in</h1>
+    <h1>Connexion</h1>
 HTML;
+    // Ajouter le lien vers la page d'accueil
+    echo html_link_home();
+
 
     if (isset($_SESSION['login']['is_logged']) && $_SESSION['login']['is_logged']) {
         // Utilisateur connecté
@@ -46,6 +49,7 @@ HTML;
     } else {
         // Utilisateur non connecté
         echo form_login();
+
     }
 
     // Afficher les messages d'erreur ou d'information

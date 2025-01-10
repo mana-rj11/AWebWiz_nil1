@@ -36,25 +36,25 @@ function html_login_button($user = "inconnu")
  */
 function html_open_form()
 {
-ob_start();
-?>
-<form method="post">
-    <?php
-    return ob_get_clean();
-    }
-
-    /**
-     * Fermer un formulaire
-     *
-     * @return string
-     */
-    function html_close_form()
-    {
     ob_start();
     ?>
-</form>
-<?php
-return ob_get_clean();
+    <form method="post">
+    <?php
+    return ob_get_clean();
+}
+
+/**
+ * Fermer un formulaire
+ *
+ * @return string
+ */
+function html_close_form()
+{
+    ob_start();
+    ?>
+    </form>
+    <?php
+    return ob_get_clean();
 }
 
 /**
