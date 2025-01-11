@@ -1,5 +1,9 @@
 <?php
 
+// Inclure le modèle pour utiliser la fonction login_validate
+require_once __DIR__ . '/../model/login.php';
+
+
 function main_login()
 {
     $action = @$_GET['action'] ?: "";
@@ -14,18 +18,22 @@ function main_login()
     if (isset($_POST['set_login'])) {
         // L'utilisateur tente de se connecter
         $login = $_POST['my_login'] ?? '';
-        $is_valid = check_login($login);
+        $password = $_POST['my_password'] ?? '';
+
+        // Appelle la fonction pour valider les informations du modèle
+        list($is_valid, $user_name, $role) = login_validate($login, $password);
 
         if ($is_valid) {
             // Connexion réussie
             $_SESSION['login']['is_logged'] = true;
-            $_SESSION['login']['name'] = $login;
+            $_SESSION['login']['name'] = $user_name;
+            $_SESSION['login']['role'] = $role; // Si le rôle est utilisé plus tard
             header("Location: .");
             exit;
         } else {
             // Connexion échouée
             unset($_SESSION['login']);
-            $msg = "Identifiant non valide. Veuillez réessayer.";
+            $msg = "Identifiant ou mot de passe incorrect. Veuillez réessayer.";
         }
     }
 
@@ -33,9 +41,9 @@ function main_login()
     echo <<<HTML
     <h1>Connexion</h1>
 HTML;
+
     // Ajouter le lien vers la page d'accueil
     echo html_link_home();
-
 
     if (isset($_SESSION['login']['is_logged']) && $_SESSION['login']['is_logged']) {
         // Utilisateur connecté
@@ -49,15 +57,16 @@ HTML;
     } else {
         // Utilisateur non connecté
         echo form_login();
-
     }
 
     // Afficher les messages d'erreur ou d'information
     if (!empty($msg)) {
         echo <<<HTML
-        <p>{$msg}</p>
+        <p style="color:red;">{$msg}</p>
 HTML;
     }
 }
+
+
 
 ?>
