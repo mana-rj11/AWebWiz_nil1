@@ -1,4 +1,16 @@
 <?php
+// Inclure le fichier contenant la fonction display_user_status()
+require_once __DIR__ . '/../controller/login.php';
+
+
+
+// Démarrer la session si elle n'est pas encore active
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Afficher le statut de l'utilisateur
+display_user_status();
 
 /**
  * Génère la partie `<head>` et l'entête avec le menu.
@@ -54,6 +66,7 @@ function html_head($menu_array = [])
                 <!-- Titre principal -->
                 <h1 id="HomeTitle">THE WALL STREET JOURNAL.</h1>
 
+
                 <!-- Menu principal -->
                 <div class="menu-links">
                 <?php
@@ -68,7 +81,9 @@ HTML;
                 ?>
                 </div>
         </div>
+
     </header>
+
     <!-- Sous-menu (nav) -->
     <nav class="secondary-menu">
         <?php
@@ -80,6 +95,10 @@ HTML;
 HTML;
         }
         ?>
+    <div class="user-status-bar">
+        <?php echo display_user_status(); ?> <!-- Affiche le statut utilisateur -->
+    </div>
+    </div>
     </nav>
     <?php
 

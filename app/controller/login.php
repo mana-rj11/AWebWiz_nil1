@@ -1,72 +1,89 @@
 <?php
+// Démarre la session immédiatement
+//session_start();
 
-// Inclure le modèle pour utiliser la fonction login_validate
-require_once __DIR__ . '/../model/login.php';
+// Inclure le modèle
+require_once realpath(__DIR__ . '/../model/login.php');
 
+
+
+
+// Démarrer la session si nécessaire
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+
+
+function require_login() {
+    if (!isset($_SESSION['login']['is_logged']) || !$_SESSION['login']['is_logged']) {
+        // Rediriger l'utilisateur non connecté vers la page de connexion
+        header("Location: login.php");
+        exit;
+    }
+}
 
 function main_login()
 {
+    // Initialise les variables
     $action = @$_GET['action'] ?: "";
     $msg = '';
 
-    if (isset($_POST['set_logout'])) {
-        // L'utilisateur se déconnecte
+    // Gestion de la déconnexion via GET
+    if ($action === 'logout') {
         unset($_SESSION['login']);
-        $msg = "Vous êtes déloggué.";
+        session_destroy(); // Détruit la session
+        header("Location: /4ipw3/public/index.php");
+        exit;
     }
 
+    // Gestion de la connexion via POST
     if (isset($_POST['set_login'])) {
-        // L'utilisateur tente de se connecter
         $login = $_POST['my_login'] ?? '';
         $password = $_POST['my_password'] ?? '';
 
-        // Appelle la fonction pour valider les informations du modèle
         list($is_valid, $user_name, $role) = login_validate($login, $password);
 
         if ($is_valid) {
-            // Connexion réussie
             $_SESSION['login']['is_logged'] = true;
             $_SESSION['login']['name'] = $user_name;
-            $_SESSION['login']['role'] = $role; // Si le rôle est utilisé plus tard
+            $_SESSION['login']['role'] = $role;
+
             header("Location: .");
-            exit;
+            exit; // Stoppe le script
         } else {
-            // Connexion échouée
             unset($_SESSION['login']);
             $msg = "Identifiant ou mot de passe incorrect. Veuillez réessayer.";
         }
     }
 
-    // Afficher le formulaire ou un message de bienvenue
+    // Affiche le contenu HTML
     echo <<<HTML
     <h1>Connexion</h1>
 HTML;
 
-    // Ajouter le lien vers la page d'accueil
     echo html_link_home();
 
     if (isset($_SESSION['login']['is_logged']) && $_SESSION['login']['is_logged']) {
-        // Utilisateur connecté
-        $name = htmlspecialchars($_SESSION['login']['name']);
-        echo <<<HTML
-        <form method="POST">
-            <p>Bienvenue {$name}</p>
-            <button type="submit" name="set_logout">Log out</button>
-        </form>
-HTML;
+        echo html_user_status(true, $_SESSION['login']['name']);
+        echo html_logout_button();
     } else {
-        // Utilisateur non connecté
+        echo html_user_status(false);
         echo form_login();
     }
 
-    // Afficher les messages d'erreur ou d'information
-    if (!empty($msg)) {
-        echo <<<HTML
-        <p style="color:red;">{$msg}</p>
-HTML;
-    }
+    echo html_message($msg);
 }
 
+// Fonction pour afficher le statut de l'utilisateur (connecté ou anonyme)
 
+function display_user_status() {
+    if (isset($_SESSION['login']['is_logged']) && $_SESSION['login']['is_logged']) {
+        $name = htmlspecialchars($_SESSION['login']['name']);
+        return "<div class='user-status logged-in'>Bonjour, <strong>$name</strong> 👋. Vous êtes identifié.</div>";
+    } else {
+        return "<div class='user-status not-logged-in'>👤 Utilisateur non identifié.</div>";
+    }
+}
 
 ?>
