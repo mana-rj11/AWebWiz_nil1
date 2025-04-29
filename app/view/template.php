@@ -19,7 +19,10 @@ display_user_status();
  * @return string
  */
 function html_head($menu_array = [])
+    // Maintenant $date_array sera défini dans la vue !
 {
+
+
     $debug = false;
     // Sous-menu
     $sub_menu_array = [
@@ -75,7 +78,8 @@ function html_head($menu_array = [])
                     $title = htmlspecialchars($menu[0], ENT_QUOTES, 'UTF-8');
                     $url = htmlspecialchars($menu[1], ENT_QUOTES, 'UTF-8');
                     echo <<<HTML
-                    <a href="?page={$url}">{$title}</a> |
+                    <a href="?action={$url}">{$title}</a> 
+     
 HTML;
                 }
                 ?>
@@ -117,6 +121,30 @@ HTML;
  *
  * @return string
  */
+
+function date_list(array $dates): string
+{
+    ob_start();
+    ?>
+    <aside class="date-sidebar">
+        <h2>📅 Dates récentes</h2>
+        <ul class="date-list">
+            <?php foreach ($dates as $date) { ?>
+                <li>📰
+                    <a href="?date=<?= urlencode($date) ?>">
+                        <?= htmlspecialchars($date, ENT_QUOTES, 'UTF-8') ?>
+                    </a>
+                </li>
+            <?php } ?>
+        </ul>
+    </aside>
+    <?php
+    return ob_get_clean();
+}
+
+
+
+
 function html_foot()
 {
     ob_start();

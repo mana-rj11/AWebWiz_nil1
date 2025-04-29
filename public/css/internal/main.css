@@ -128,3 +128,33 @@ footer img
     color: #d44;
     border: 1px solid #d44;
 }
+
+.date-sidebar {
+    background-color: #f9f9f9;
+    padding: 1em;
+    border-left: 4px solid #ddd;
+    margin-bottom: 2em;
+}
+
+.date-sidebar h2 {
+    font-size: 1.4em;
+    margin-bottom: 0.5em;
+}
+
+.date-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.date-list li {
+    margin-bottom: 0.3em;
+}
+
+.date-list a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.date-list a:hover {
+    text-decoration: underline;
+}
