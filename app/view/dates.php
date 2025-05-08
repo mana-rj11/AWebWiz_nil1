@@ -19,3 +19,4 @@ function html_date_sidebar(array $dates): string
     <?php
     return ob_get_clean();
 }
+

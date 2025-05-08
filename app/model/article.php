@@ -101,3 +101,24 @@ function get_all_dates_article(): array
     return array_map(fn($row) => $row['date'], $stmt->fetchAll());
 }
 
+function get_articles_by_date(string $date): array
+{
+    $q = <<<SQL
+SELECT 
+    id_art AS id,
+    title_art AS title,
+    hook_art AS hook,
+    content_art AS content,
+    date_art AS date_published, 
+    image_art AS image_name
+FROM t_article 
+WHERE DATE(date_art) = :selected_date
+ORDER BY date_art DESC
+SQL;
+
+    $pdo = get_pdo();
+    $stmt = $pdo->prepare($q);
+    $stmt->execute(['selected_date' => $date]);
+    return $stmt->fetchAll();
+}
+
